@@ -4,34 +4,38 @@ import java.awt.event.*;
 import java.util.Random;
 
 public class TicTacToe {
-
-    private JFrame frame;
-    private JButton[][] boardButtons = new JButton[3][3];
-    private JComboBox<String> player1Choice, player2Choice;
-    private JButton startButton;
-    private boolean isCrossTurn = true;
+    private JFrame frame;                                                           // Hauptfenster
+    private JButton[][] boardButtons = new JButton[3][3];                           // 3x3 Matrix (Schaltflächen)
+    private JComboBox<String> player1Choice, player2Choice;                         // Dropdown-Menüs zur Auswahl der Spieler.
+    private JButton startButton;                                                    // Button zum Starten des Spiels
+    private boolean isCrossTurn = true;                                             // Ob Kreuz oder Kreis dran ist
     private final ImageIcon CROSS_ICON = new ImageIcon("data/cross.png");
     private final ImageIcon CIRCLE_ICON = new ImageIcon("data/circle.png");
     private final ImageIcon EMPTY_ICON = new ImageIcon("data/empty.png");
-    private boolean gameStarted = false;
+    private boolean gameStarted = false;                                               // Ob das Spiel gestartet wurde oder nicht
 
-    public TicTacToe() {
+
+    public TicTacToe() { // Konstruktor
+        // Fenster erstellen
         frame = new JFrame("Tic Tac Toe");
         frame.setIconImage(new ImageIcon("/mnt/data/ifnmho27.png").getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 500);
         frame.setLayout(new BorderLayout());
 
+        // Spielfeld erstellen
         JPanel boardPanel = new JPanel(new GridLayout(3, 3));
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                boardButtons[i][j] = new JButton();
+                boardButtons[i][j] = new JButton(); // Schaltfläche erstellen
                 boardButtons[i][j].setIcon(EMPTY_ICON);
+
                 boardButtons[i][j].addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (!gameStarted) return;
+                        if (!gameStarted) return; // Wenn das Spiel noch nicht gestartet wurde, dann nichts machen
 
+                        // Wenn die Schaltfläche leer ist, dann das Icon setzen und den Zug wechseln
                         JButton clickedButton = (JButton) e.getSource();
                         if (clickedButton.getIcon().equals(EMPTY_ICON)) {
                             if (isCrossTurn) {
@@ -75,6 +79,7 @@ public class TicTacToe {
             }
         });
 
+        // Start-Button erstellen
         startButton = new JButton("Start");
         startButton.addActionListener(new ActionListener() {
             @Override
