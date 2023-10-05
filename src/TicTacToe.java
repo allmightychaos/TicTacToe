@@ -20,6 +20,7 @@ public class TicTacToe {
 
     private boolean isCrossTurn = true;     // Ob Kreuz oder Kreis dran ist
     private boolean gameStarted = false;    // Ob das Spiel gestartet wurde oder nicht
+    private boolean isGameInProgress = false;
 
     private final ImageIcon CROSS_ICON = new ImageIcon("data/cross.png");
     private final ImageIcon CIRCLE_ICON = new ImageIcon("data/circle.png");
@@ -114,15 +115,18 @@ public class TicTacToe {
 
 
         startButton.addActionListener(new ActionListener() {
-            // Wenn der Start-Button gedrückt wird, dann das Spiel zurücksetzen und den Text ändern
-
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameStarted = true;
-                resetGame();
-                startButton.setText("In progress...");
-                choicePanel.revalidate();
-                choicePanel.repaint();
+                if (isGameInProgress) {
+                    int choice = JOptionPane.showConfirmDialog(frame, "Spiel abbrechen?", "Abbrechen", JOptionPane.YES_NO_OPTION);
+                    if (choice == JOptionPane.YES_OPTION) {
+                        resetGame();
+                    }
+                } else {
+                    isGameInProgress = true;
+                    updateStartButtonText();
+                    initializeGame();
+                }
             }
         });
 
@@ -154,12 +158,18 @@ public class TicTacToe {
     private void checkGameStatus() {
         if (hasContestantWon(CROSS_ICON)) {
             JOptionPane.showMessageDialog(frame, "Kreuz gewinnt!");
+            isGameInProgress = false;
+            updateStartButtonText();
             resetGame();
         } else if (hasContestantWon(CIRCLE_ICON)) {
             JOptionPane.showMessageDialog(frame, "Kreis gewinnt!");
+            isGameInProgress = false;
+            updateStartButtonText();
             resetGame();
         } else if (isBoardFull()) {
             JOptionPane.showMessageDialog(frame, "Unentschieden!");
+            isGameInProgress = false;
+            updateStartButtonText();
             resetGame();
         }
     }
@@ -196,20 +206,10 @@ public class TicTacToe {
                 boardButtons[i][j].setIcon(EMPTY_ICON);
             }
         }
-        isCrossTurn = new Random().nextBoolean();
-        String startingPlayer = isCrossTurn ? "Kreuz" : "Kreis";
-        JOptionPane.showMessageDialog(frame, startingPlayer + " beginnt!");
-
-        if (("PC".equals(player1Choice.getSelectedItem()) && isCrossTurn) ||
-                ("PC".equals(player2Choice.getSelectedItem()) && !isCrossTurn)) {
-            playPCTurn();
-        }
-
-        startButton.setText("Start");
-        choicePanel.revalidate();
-        choicePanel.repaint();
+        gameStarted = false;
+        isGameInProgress = false;
+        updateStartButtonText();
     }
-
 
     private int showDifficultyChooser() {
         String[] options = {"Leicht", "Mittel", "Schwer"};
@@ -366,6 +366,26 @@ public class TicTacToe {
             }
         }
         return best;
+    }
+
+    private void initializeGame() {
+        isCrossTurn = new Random().nextBoolean();
+        gameStarted = true;
+        String startingPlayer = isCrossTurn ? "Kreuz" : "Kreis";
+        JOptionPane.showMessageDialog(frame, startingPlayer + " beginnt!");
+
+        if (("PC".equals(player1Choice.getSelectedItem()) && isCrossTurn) ||
+                ("PC".equals(player2Choice.getSelectedItem()) && !isCrossTurn)) {
+            playPCTurn();
+        }
+    }
+
+    private void updateStartButtonText() {
+        if (isGameInProgress) {
+            startButton.setText("In progress...");
+        } else {
+            startButton.setText("Start");
+        }
     }
 
     public static void main(String[] args) {
