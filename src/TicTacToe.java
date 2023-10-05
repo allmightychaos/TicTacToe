@@ -25,19 +25,24 @@ public class TicTacToe {
     private final ImageIcon CIRCLE_ICON = new ImageIcon("data/circle.png");
     private final ImageIcon EMPTY_ICON = new ImageIcon("data/empty.png");
 
+    private final JPanel choicePanel;
+
     public TicTacToe() { // Konstruktor
         // Fenster erstellen
         frame = new JFrame("TicTacToe");
         frame.setIconImage(new ImageIcon("/mnt/data/icon.png").getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 500);
+        frame.setSize(500, 600);
         frame.setLayout(new BorderLayout());
 
         // Spielfeld erstellen
         JPanel boardPanel = new JPanel(new GridLayout(3, 3));
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                boardButtons[i][j] = new JButton(); // Schaltfläche erstellen
+                boardButtons[i][j] = new JButton();
+                boardButtons[i][j].setPreferredSize(new Dimension(130, 130));
+                boardButtons[i][j].setMaximumSize(new Dimension(130, 130));
+
                 boardButtons[i][j].setIcon(EMPTY_ICON);
 
                 boardButtons[i][j].addActionListener(new ActionListener() {
@@ -63,13 +68,15 @@ public class TicTacToe {
                     }
                 });
                 boardPanel.add(boardButtons[i][j]);
+                boardPanel.setPreferredSize(new Dimension(390, 390));
+
             }
         }
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
 
-        JPanel choicePanel = new JPanel(new GridBagLayout());
+        choicePanel = new JPanel(new GridBagLayout());
         player1Choice = new JComboBox<>(new String[]{"Mensch", "PC"});
         player2Choice = new JComboBox<>(new String[]{"Mensch", "PC"});
 
@@ -95,25 +102,27 @@ public class TicTacToe {
 
         // Start-Button erstellen
         startButton = new JButton("Start");
-        startButton.setPreferredSize(new Dimension(150, 30));  // Set a preferred size so it won't resize
+        startButton.setPreferredSize(new Dimension(150, 30));
 
-        JPanel startButtonPanel = new JPanel();  // This will use FlowLayout by default
+        JPanel startButtonPanel = new JPanel();
         startButtonPanel.add(startButton);
 
         constraints.gridx = 1;
         constraints.gridy = 2;
         constraints.gridwidth = 1;
-        choicePanel.add(startButtonPanel, constraints);  // Add the new panel instead of the button directly
+        choicePanel.add(startButtonPanel, constraints);
 
 
         startButton.addActionListener(new ActionListener() {
+            // Wenn der Start-Button gedrückt wird, dann das Spiel zurücksetzen und den Text ändern
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 gameStarted = true;
                 resetGame();
-                choicePanel.remove(startButton);
-                frame.validate();
-                frame.repaint();
+                startButton.setText("In progress...");
+                choicePanel.revalidate();
+                choicePanel.repaint();
             }
         });
 
@@ -195,7 +204,12 @@ public class TicTacToe {
                 ("PC".equals(player2Choice.getSelectedItem()) && !isCrossTurn)) {
             playPCTurn();
         }
+
+        startButton.setText("Start");
+        choicePanel.revalidate();
+        choicePanel.repaint();
     }
+
 
     private int showDifficultyChooser() {
         String[] options = {"Leicht", "Mittel", "Schwer"};
