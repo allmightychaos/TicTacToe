@@ -14,14 +14,11 @@ public class TicTacToe {
 
     private JButton startButton;
 
-    private boolean isCrossTurn;
-    private boolean isGameInProgress;
+    private boolean isCrossTurn = new Random().nextBoolean();;
+    private boolean isGameInProgress = false;
 
     public TicTacToe() {
         frame = Hauptfenster();
-
-        isCrossTurn = new Random().nextBoolean();
-        isGameInProgress = false;
 
         JPanel boardPanel = Spielbrett();
         JPanel auswahlPanel = AuswahlPanel();
@@ -122,6 +119,15 @@ public class TicTacToe {
             startButton.setText("Spiel beenden...");
             isGameInProgress = true;
             JOptionPane.showMessageDialog(frame, (isCrossTurn ? "Kreuz" : "Kreis") + " beginnt!");
+
+            // Zufälliger Zug, falls 'Zufällig' als Spieler gewählt wurde
+            if (isCrossTurn && "Zufällig".equals(player1Choice.getSelectedItem())) {
+                zufaelligerZug(CROSS_ICON);
+            } // Zufällig als Spieler 1
+
+            if (!isCrossTurn && "Zufällig".equals(player2Choice.getSelectedItem())) {
+                zufaelligerZug(CIRCLE_ICON);
+            } // Zufällig als Spieler 2
         }
     }
 
@@ -136,7 +142,7 @@ public class TicTacToe {
         } while (!boardButtons[x][y].getIcon().equals(EMPTY_ICON));
 
         boardButtons[x][y].setIcon(icon);
-        isCrossTurn = !isCrossTurn;
+        isCrossTurn = true;
         pruefeSpielStatus();
     }
 
