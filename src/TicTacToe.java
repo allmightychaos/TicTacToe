@@ -92,23 +92,25 @@ public class TicTacToe {
     }
 
     private void SpielfeldKlick(JButton clickedButton) {
-        if (!isGameInProgress) return;
+        if (isGameInProgress) {
+            if (clickedButton.getIcon().equals(EMPTY_ICON)) {
+                clickedButton.setIcon(isCrossTurn ? CROSS_ICON : CIRCLE_ICON);
+                isCrossTurn = !isCrossTurn;
+                pruefeSpielStatus();
+            }
 
-        if (clickedButton.getIcon().equals(EMPTY_ICON)) {
-            clickedButton.setIcon(isCrossTurn ? CROSS_ICON : CIRCLE_ICON);
-            isCrossTurn = !isCrossTurn;
-            pruefeSpielStatus();
+            // Zufälliger Zug, falls 'Zufällig' als Spieler gewählt wurde
+
+            if (isCrossTurn && "Zufällig".equals(player1Choice.getSelectedItem())) {
+                zufaelligerZug(CROSS_ICON);
+            } // Zufällig als Spieler 1
+
+            if (!isCrossTurn && "Zufällig".equals(player2Choice.getSelectedItem())) {
+                zufaelligerZug(CIRCLE_ICON);
+            } // Zufällig als Spieler 2
+        } else {
+            JOptionPane.showMessageDialog(frame, "Spiel ist noch nicht gestartet!");
         }
-
-        // Zufälliger Zug, falls 'Zufällig' als Spieler gewählt wurde
-
-        if (isCrossTurn && "Zufällig".equals(player1Choice.getSelectedItem())) {
-            zufaelligerZug(CROSS_ICON);
-        } // Zufällig als Spieler 1
-
-        if (!isCrossTurn && "Zufällig".equals(player2Choice.getSelectedItem())) {
-            zufaelligerZug(CIRCLE_ICON);
-        } // Zufällig als Spieler 2
     }
 
     private void StartButtonKlick() {
