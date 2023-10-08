@@ -14,8 +14,10 @@ public class TicTacToe {
 
     private JButton startButton;
 
-    private boolean isCrossTurn = new Random().nextBoolean();;
+    private boolean isCrossTurn = new Random().nextBoolean();
     private boolean isGameInProgress = false;
+
+    private final Algorithm ai;
 
     public TicTacToe() {
         frame = Hauptfenster();
@@ -23,16 +25,14 @@ public class TicTacToe {
         JPanel boardPanel = Spielbrett();
         JPanel auswahlPanel = AuswahlPanel();
 
+        ai = new Algorithm(boardButtons, CROSS_ICON, CIRCLE_ICON, EMPTY_ICON);
+
         boardPanel.setBounds(20, 20, 450, 450);
         auswahlPanel.setBounds(20, 470, 450, 100);
 
         frame.add(boardPanel);
         frame.add(auswahlPanel);
         frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(TicTacToe::new);
     }
 
     private JFrame Hauptfenster() {
@@ -103,11 +103,11 @@ public class TicTacToe {
         // Wenn das Spiel immer noch läuft, dann lass den PC seinen Zug machen
         if (isGameInProgress) {
             if (isCrossTurn && "Zufällig".equals(player1Choice.getSelectedItem())) {
-                zufaelligerZug(CROSS_ICON);
+                zufaelligerZug();
             } // Zufällig als Spieler 1
 
             if (!isCrossTurn && "Zufällig".equals(player2Choice.getSelectedItem())) {
-                zufaelligerZug(CIRCLE_ICON);
+                zufaelligerZug();
             } // Zufällig als Spieler 2
         }
     }
@@ -124,28 +124,18 @@ public class TicTacToe {
 
             // Zufälliger Zug, falls 'Zufällig' als Spieler gewählt wurde
             if (isCrossTurn && "Zufällig".equals(player1Choice.getSelectedItem())) {
-                zufaelligerZug(CROSS_ICON);
+                zufaelligerZug();
             } // Zufällig als Spieler 1
 
             if (!isCrossTurn && "Zufällig".equals(player2Choice.getSelectedItem())) {
-                zufaelligerZug(CIRCLE_ICON);
+                zufaelligerZug();
             } // Zufällig als Spieler 2
         }
     }
 
-    private void zufaelligerZug(ImageIcon icon) {
-        Random rand = new Random();
-        int x, y;
-
-        do { // Zufallszahl generieren (zwischen 1 und 9)
-            int zufall = rand.nextInt(9) + 1;
-            x = (zufall - 1) / 3;
-            y = (zufall - 1) % 3;
-        } while (!boardButtons[x][y].getIcon().equals(EMPTY_ICON));
-
-        boardButtons[x][y].setIcon(icon);
+    private void zufaelligerZug() {
+        ai.zufaelligerZug(isCrossTurn);
         isCrossTurn = true;
-        pruefeSpielStatus();
     }
 
     private void pruefeSpielStatus() {
