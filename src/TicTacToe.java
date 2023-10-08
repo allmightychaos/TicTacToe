@@ -71,8 +71,8 @@ public class TicTacToe {
     private JPanel AuswahlPanel() {
         JPanel auswahlPanel = new JPanel(new FlowLayout());
 
-        player1Choice = new JComboBox<>(new String[]{"Mensch", "Zufällig", "MiniMax"});
-        player2Choice = new JComboBox<>(new String[]{"Mensch", "Zufällig", "MiniMax"});
+        player1Choice = new JComboBox<>(new String[]{"Mensch"});
+        player2Choice = new JComboBox<>(new String[]{"Mensch", "Zufällig"});
 
         startButton = new JButton("Spiel starten...");
         startButton.addActionListener(e -> StartButtonKlick());
