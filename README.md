@@ -1,21 +1,21 @@
 # TicTacToe in Java
 
-## Known Issues:
+## Probleme:
 
-### 1. Game Progress Indicator:
-- Current Behavior: During gameplay, the Start-Button's text dynamically changes to "In progress..." based on various function calls.
-- Desired Behavior: A consistent background check should ensure that as long as the game is active, the button displays "In progress...". Upon game termination (win, tie, etc.), it should revert to "Start" until the next game session is initiated by the user.
+### 1. Spielfortschritt-Anzeige:
+- Aktuelles Verhalten: Während des Spiels ändert sich der Text des Start-Buttons dynamisch zu "In progress...", abhängig von verschiedenen Funktionsaufrufen.
+- Gewünschtes Verhalten: Eine konsistente Hintergrundprüfung sollte sicherstellen, dass die Schaltfläche "In progress..." anzeigt, solange das Spiel aktiv ist. Nach Beendigung des Spiels (Sieg, Unentschieden usw.) sollte die Schaltfläche wieder "Start" anzeigen, bis die nächste Spielsitzung vom Benutzer initiiert wird.
 
-### 2. PC Player Difficulty Selection:
-- Issue A: The difficulty selection button is hidden unless the "PC" player option is selected.
-    - Solution: Always display the button. If the "PC" option isn't selected, grey it out. If the user attempts to interact with it, display an alert: "Difficulty settings are available only for the 'PC' player option."
-- Issue B: The current difficulty selection window is not user-friendly.
-    - Solution: Revise the difficulty selector interface to resemble the player-combobox instead of opening in a separate window.
+### 2. Auswahl des Schwierigkeitsgrads für PC-Spieler:
+- Problem A: Die Schaltfläche zur Auswahl des Schwierigkeitsgrads ist ausgeblendet, wenn nicht die Option "PC" ausgewählt ist.
+  - Lösung: Zeigen Sie die Schaltfläche immer an. Wenn die Option "PC" nicht ausgewählt ist, grauen Sie sie aus. Wenn der Benutzer versucht, damit zu interagieren, zeigen Sie eine Warnung an: "Die Schwierigkeitseinstellungen sind nur für die Spieleroption 'PC' verfügbar".
+- Problem B: Das aktuelle Schwierigkeitsauswahlfenster ist nicht benutzerfreundlich.
+  - Lösung: Überarbeiten Sie die Benutzeroberfläche der Schwierigkeitsauswahl so, dass sie der Spieler-Combobox ähnelt und nicht in einem separaten Fenster geöffnet wird.
 
-### 3. Game Algorithms Enhancement:
-- Current Behavior: The 'easy' difficulty often performs better than the 'hard' difficulty due to its random move selection, whereas the 'hard' difficulty is predictable, starting at the upper left corner without accounting for opponent's potential winning moves.
-- Desired Behavior: Improve the 'medium' and 'hard' algorithms. The 'hard' difficulty should be notably challenging, anticipating the player's potential winning moves and strategizing based on predicted future moves.
+### 3. Verbesserung der Spielalgorithmen:
+- Aktuelles Verhalten: Der "leichte" Schwierigkeitsgrad schneidet aufgrund der zufälligen Zugauswahl oft besser ab als der "schwere" Schwierigkeitsgrad, während der "schwere" Schwierigkeitsgrad vorhersehbar ist und in der oberen linken Ecke beginnt, ohne die möglichen Gewinnzüge des Gegners zu berücksichtigen.
+- Gewünschtes Verhalten: Verbessern Sie die Algorithmen für "mittel" und "schwer". Der "schwere" Schwierigkeitsgrad sollte besonders herausfordernd sein, da er die potenziellen Gewinnzüge des Spielers voraussieht und die Strategie auf der Grundlage der vorhergesagten zukünftigen Züge entwickelt.
 
-### 4. PC vs PC Gameplay:
-- Current Behavior: When both Player-1 and Player-2 are set to 'PC', only one move occurs before the game stalls.
-- Desired Behavior: In 'PC vs PC' mode, the game should alternate between Player-1 and Player-2 every 0.5 seconds, executing moves based on their respective difficulty settings (easy, medium, hard).
+### 4. PC vs. PC Spiel:
+- Aktuelles Verhalten: Wenn sowohl Spieler-1 als auch Spieler-2 auf "PC" eingestellt sind, erfolgt nur ein Zug, bevor das Spiel zum Stillstand kommt.
+- Gewünschtes Verhalten: Im Modus "PC gegen PC" sollte das Spiel alle 0,5 Sekunden zwischen Spieler-1 und Spieler-2 wechseln, wobei die Züge entsprechend der jeweiligen Schwierigkeitseinstellung (leicht, mittel, schwer) ausgeführt werden.

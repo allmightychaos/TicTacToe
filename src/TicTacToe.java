@@ -9,6 +9,9 @@ public class TicTacToe {
     private final ImageIcon CIRCLE_ICON = new ImageIcon("data/circle.png");
     private final ImageIcon EMPTY_ICON = new ImageIcon("data/empty.png");
 
+    private JComboBox<String> player1Choice;
+    private JComboBox<String> player2Choice;
+
     private JButton startButton;
 
     private boolean isCrossTurn;
@@ -71,8 +74,8 @@ public class TicTacToe {
     private JPanel AuswahlPanel() {
         JPanel auswahlPanel = new JPanel(new FlowLayout());
 
-        JComboBox<String> player1Choice = new JComboBox<>(new String[]{"Spieler", "Computer"});
-        JComboBox<String> player2Choice = new JComboBox<>(new String[]{"Spieler", "Computer"});
+        player1Choice = new JComboBox<>(new String[]{"Mensch", "Zufällig", "MiniMax"});
+        player2Choice = new JComboBox<>(new String[]{"Mensch", "Zufällig", "MiniMax"});
 
         startButton = new JButton("Spiel starten...");
         startButton.addActionListener(e -> StartButtonKlick());
@@ -90,11 +93,22 @@ public class TicTacToe {
 
     private void SpielfeldKlick(JButton clickedButton) {
         if (!isGameInProgress) return;
+
         if (clickedButton.getIcon().equals(EMPTY_ICON)) {
             clickedButton.setIcon(isCrossTurn ? CROSS_ICON : CIRCLE_ICON);
             isCrossTurn = !isCrossTurn;
             pruefeSpielStatus();
         }
+
+        // Zufälliger Zug, falls 'Zufällig' als Spieler gewählt wurde
+
+        if (isCrossTurn && "Zufällig".equals(player1Choice.getSelectedItem())) {
+            zufaelligerZug(CROSS_ICON);
+        } // Zufällig als Spieler 1
+
+        if (!isCrossTurn && "Zufällig".equals(player2Choice.getSelectedItem())) {
+            zufaelligerZug(CIRCLE_ICON);
+        } // Zufällig als Spieler 2
     }
 
     private void StartButtonKlick() {
@@ -107,6 +121,21 @@ public class TicTacToe {
             isGameInProgress = true;
             JOptionPane.showMessageDialog(frame, (isCrossTurn ? "Kreuz" : "Kreis") + " beginnt!");
         }
+    }
+
+    private void zufaelligerZug(ImageIcon icon) {
+        Random rand = new Random();
+        int x, y;
+
+        do { // Zufallszahl generieren (zwischen 1 und 9)
+            int zufall = rand.nextInt(9) + 1;
+            x = (zufall - 1) / 3;
+            y = (zufall - 1) % 3;
+        } while (!boardButtons[x][y].getIcon().equals(EMPTY_ICON));
+
+        boardButtons[x][y].setIcon(icon);
+        isCrossTurn = !isCrossTurn;
+        pruefeSpielStatus();
     }
 
     private void pruefeSpielStatus() {
