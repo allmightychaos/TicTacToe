@@ -89,15 +89,19 @@ public class TicTacToe {
     }
 
     private void SpielfeldKlick(JButton clickedButton) {
+        if (!isGameInProgress) {
+            JOptionPane.showMessageDialog(frame, "Spiel ist noch nicht gestartet!");
+            return;
+        }
+
+        if (clickedButton.getIcon().equals(EMPTY_ICON)) {
+            clickedButton.setIcon(isCrossTurn ? CROSS_ICON : CIRCLE_ICON);
+            isCrossTurn = !isCrossTurn;
+            pruefeSpielStatus();
+        }
+
+        // Wenn das Spiel immer noch läuft, dann lass den PC seinen Zug machen
         if (isGameInProgress) {
-            if (clickedButton.getIcon().equals(EMPTY_ICON)) {
-                clickedButton.setIcon(isCrossTurn ? CROSS_ICON : CIRCLE_ICON);
-                isCrossTurn = !isCrossTurn;
-                pruefeSpielStatus();
-            }
-
-            // Zufälliger Zug, falls 'Zufällig' als Spieler gewählt wurde
-
             if (isCrossTurn && "Zufällig".equals(player1Choice.getSelectedItem())) {
                 zufaelligerZug(CROSS_ICON);
             } // Zufällig als Spieler 1
@@ -105,8 +109,6 @@ public class TicTacToe {
             if (!isCrossTurn && "Zufällig".equals(player2Choice.getSelectedItem())) {
                 zufaelligerZug(CIRCLE_ICON);
             } // Zufällig als Spieler 2
-        } else {
-            JOptionPane.showMessageDialog(frame, "Spiel ist noch nicht gestartet!");
         }
     }
 
